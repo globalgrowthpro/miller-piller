@@ -10,33 +10,150 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EquipmentRouteImport } from './routes/equipment'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as SectorsRouteImport } from './routes/sectors'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
+import { Route as EquipmentSlugRouteImport } from './routes/equipment.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipmentRoute = EquipmentRouteImport.update({
+  id: '/equipment',
+  path: '/equipment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuoteRoute = QuoteRouteImport.update({
+  id: '/quote',
+  path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SectorsRoute = SectorsRouteImport.update({
+  id: '/sectors',
+  path: '/sectors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipmentIndexRoute = EquipmentIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EquipmentRoute,
+} as any)
+const EquipmentSlugRoute = EquipmentSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EquipmentRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/equipment': typeof EquipmentRouteWithChildren
+  '/projects': typeof ProjectsRoute
+  '/quote': typeof QuoteRoute
+  '/sectors': typeof SectorsRoute
+  '/services': typeof ServicesRoute
+  '/equipment/$slug': typeof EquipmentSlugRoute
+  '/equipment/': typeof EquipmentIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/projects': typeof ProjectsRoute
+  '/quote': typeof QuoteRoute
+  '/sectors': typeof SectorsRoute
+  '/services': typeof ServicesRoute
+  '/equipment/$slug': typeof EquipmentSlugRoute
+  '/equipment': typeof EquipmentIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/equipment': typeof EquipmentRouteWithChildren
+  '/projects': typeof ProjectsRoute
+  '/quote': typeof QuoteRoute
+  '/sectors': typeof SectorsRoute
+  '/services': typeof ServicesRoute
+  '/equipment/$slug': typeof EquipmentSlugRoute
+  '/equipment/': typeof EquipmentIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/equipment'
+    | '/projects'
+    | '/quote'
+    | '/sectors'
+    | '/services'
+    | '/equipment/$slug'
+    | '/equipment/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/projects'
+    | '/quote'
+    | '/sectors'
+    | '/services'
+    | '/equipment/$slug'
+    | '/equipment'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/equipment'
+    | '/projects'
+    | '/quote'
+    | '/sectors'
+    | '/services'
+    | '/equipment/$slug'
+    | '/equipment/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  EquipmentRoute: typeof EquipmentRouteWithChildren
+  ProjectsRoute: typeof ProjectsRoute
+  QuoteRoute: typeof QuoteRoute
+  SectorsRoute: typeof SectorsRoute
+  ServicesRoute: typeof ServicesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +165,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipment': {
+      id: '/equipment'
+      path: '/equipment'
+      fullPath: '/equipment'
+      preLoaderRoute: typeof EquipmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quote': {
+      id: '/quote'
+      path: '/quote'
+      fullPath: '/quote'
+      preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sectors': {
+      id: '/sectors'
+      path: '/sectors'
+      fullPath: '/sectors'
+      preLoaderRoute: typeof SectorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipment/': {
+      id: '/equipment/'
+      path: '/'
+      fullPath: '/equipment/'
+      preLoaderRoute: typeof EquipmentIndexRouteImport
+      parentRoute: typeof EquipmentRoute
+    }
+    '/equipment/$slug': {
+      id: '/equipment/$slug'
+      path: '/$slug'
+      fullPath: '/equipment/$slug'
+      preLoaderRoute: typeof EquipmentSlugRouteImport
+      parentRoute: typeof EquipmentRoute
+    }
   }
 }
 
+interface EquipmentRouteChildren {
+  EquipmentSlugRoute: typeof EquipmentSlugRoute
+  EquipmentIndexRoute: typeof EquipmentIndexRoute
+}
+
+const EquipmentRouteChildren: EquipmentRouteChildren = {
+  EquipmentSlugRoute: EquipmentSlugRoute,
+  EquipmentIndexRoute: EquipmentIndexRoute,
+}
+
+const EquipmentRouteWithChildren = EquipmentRoute._addFileChildren(
+  EquipmentRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  EquipmentRoute: EquipmentRouteWithChildren,
+  ProjectsRoute: ProjectsRoute,
+  QuoteRoute: QuoteRoute,
+  SectorsRoute: SectorsRoute,
+  ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

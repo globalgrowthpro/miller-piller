@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Bilingual UI: all visible copy comes from `src/lib/i18n.tsx` (`t()` keys or `{en, ar}` values); Arabic/RTL is default and `dir` is set on `<html>`. Why: one place to keep both languages in sync.
+- Equipment, services, sectors and projects currently live in `src/data/catalog.ts` until the admin panel moves them to the database. Why: public pages first, per agreed build order.
+- Quote requests are validated by the shared zod schema in `src/lib/quote.functions.ts` on both client and server, and stored in `quote_requests`. Why: one source of validation rules.
