@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import hero from "@/assets/telehandler.jpg";
 import { useI18n } from "@/lib/i18n";
 import { contact } from "@/lib/contact";
@@ -16,13 +16,12 @@ function Contact() {
     { Icon: Phone, label: t("phone"), value: contact.phoneDisplay, href: contact.phoneHref, dir: "ltr" as const },
     { Icon: Mail, label: t("email"), value: contact.email, href: contact.emailHref, dir: "ltr" as const },
     { Icon: MapPin, label: lang === "ar" ? "العنوان" : "Address", value: contact.address[lang], dir: lang === "ar" ? ("rtl" as const) : ("ltr" as const) },
-    { Icon: Clock, label: lang === "ar" ? "ساعات العمل" : "Working hours", value: "—", dir: "ltr" as const },
   ];
   return (
     <>
       <PageHero title={t("contact")} image={hero} />
       <section className="mx-auto max-w-7xl px-4 py-14">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map(({ Icon, label, value, href, dir }) => (
             <div key={label} className="card-surface p-6"><Icon className="text-primary" /><p className="mt-3 text-sm text-muted-foreground">{label}</p>{href ? <a href={href} dir={dir} className="font-bold text-navy hover:text-primary">{value}</a> : <p dir={dir} className="font-bold text-navy">{value}</p>}</div>
           ))}
