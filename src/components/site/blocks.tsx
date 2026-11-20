@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
-import type { Equipment } from "@/data/catalog";
+import { stats, type Equipment } from "@/data/catalog";
 import { useI18n } from "@/lib/i18n";
 
 export function SectionTitle({ children, action }: { children: ReactNode; action?: ReactNode }) {
@@ -62,6 +62,20 @@ export function CtaBand() {
           <p className="mt-2 text-navy-foreground/75">{t("ctaText")}</p>
         </div>
         <Link to="/quote" className="btn btn-primary shrink-0">{t("quote")} <ArrowRight size={18} className="flip-rtl" /></Link>
+      </div>
+    </section>
+  );
+}
+
+export function StatsBand() {
+  const { lang, t } = useI18n();
+  return (
+    <section className="bg-gradient-primary">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 text-center text-primary-foreground md:grid-cols-4">
+        {stats.map((s) => (
+          <div key={s.label.en}><p className="font-display text-4xl font-bold sm:text-5xl" dir="ltr">{s.value}</p><p className="mt-1 font-semibold">{s.label[lang]}</p></div>
+        ))}
+        <p className="col-span-2 text-xs opacity-80 md:col-span-4">{t("placeholderNote")}</p>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import logo from "@/assets/miller-piller-logo.png.asset.json";
 
 export function SiteFooter() {
   const { t } = useI18n();
@@ -8,7 +9,7 @@ export function SiteFooter() {
     <footer className="bg-navy-deep text-navy-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
-          <p className="font-display text-2xl font-bold">Miller Piller · <span className="text-primary">ميلر بيلر</span></p>
+          <Link to="/" className="inline-block rounded-xl bg-card p-3"><img src={logo.url} alt="Miller Piller — Contracting and Equipment Trade" className="h-16 w-auto" loading="lazy" /></Link>
           <p className="mt-3 text-sm text-navy-foreground/70">{t("heroText")}</p>
         </div>
         <div>

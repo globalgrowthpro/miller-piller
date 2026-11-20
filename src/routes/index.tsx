@@ -2,9 +2,10 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Clock, HardHat, Headphones, Search } from "lucide-react";
 import { useState } from "react";
 import hero from "@/assets/hero-excavator.jpg";
-import { categories, equipment, services } from "@/data/catalog";
+import { categories, equipment, projects, sectors, services } from "@/data/catalog";
 import { useI18n } from "@/lib/i18n";
-import { CtaBand, EquipmentCard, SectionTitle } from "@/components/site/blocks";
+import { CtaBand, EquipmentCard, SectionTitle, StatsBand } from "@/components/site/blocks";
+import { Building2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [{ title: "Miller Piller | Heavy Equipment Rental & Contracting" }, { name: "description", content: "Miller Piller rents heavy equipment with skilled operators and delivers excavation and site preparation works." }, { property: "og:title", content: "Miller Piller | Heavy Equipment Rental & Contracting" }, { property: "og:description", content: "Miller Piller rents heavy equipment with skilled operators and delivers excavation and site preparation works." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
@@ -80,6 +81,33 @@ function Home() {
         <SectionTitle action={<Link to="/equipment" className="font-semibold text-primary">{t("viewAll")}</Link>}>{t("featured")}</SectionTitle>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{equipment.map((e) => <EquipmentCard key={e.slug} item={e} />)}</div>
         <p className="mt-6 text-xs text-muted-foreground">{t("placeholderNote")}</p>
+      </section>
+      <StatsBand />
+
+      <section className="mx-auto max-w-7xl px-4 py-14">
+        <SectionTitle action={<Link to="/sectors" className="font-semibold text-primary">{t("viewAll")}</Link>}>{t("sectors")}</SectionTitle>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          {sectors.map((s) => (
+            <div key={s.en} className="card-surface flex items-center gap-3 p-4">
+              <Building2 className="shrink-0 text-primary" /><span className="font-bold text-navy">{s[lang]}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-secondary/60 py-14">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionTitle action={<Link to="/projects" className="font-semibold text-primary">{t("viewAll")}</Link>}>{t("projects")}</SectionTitle>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((p) => (
+              <Link key={p.title.en} to="/projects" className="group relative block aspect-[4/3] overflow-hidden rounded-xl">
+                <img src={p.image} alt={p.title[lang]} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                <div className="bg-hero-overlay absolute inset-0 opacity-80" />
+                <p className="absolute bottom-4 start-4 end-4 text-xl font-bold text-navy-foreground">{p.title[lang]}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
       <CtaBand />
     </>

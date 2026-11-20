@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { CheckCircle2 } from "lucide-react";
 import hero from "@/assets/telehandler.jpg";
 import { services } from "@/data/catalog";
 import { useI18n } from "@/lib/i18n";
@@ -21,6 +22,7 @@ function Services() {
             <div className="flex flex-col justify-center p-8">
               <h2 className="text-3xl font-bold text-navy">{s.title[lang]}</h2>
               <p className="mt-3 text-muted-foreground">{s.text[lang]}</p>
+              <ul className="mt-4 space-y-2">{s.features?.map((f) => <li key={f.en} className="flex items-center gap-2 font-semibold text-navy"><CheckCircle2 size={18} className="text-primary" />{f[lang]}</li>)}</ul>
               <Link to="/quote" className="btn btn-primary mt-6 self-start">{t("requestQuote")}</Link>
             </div>
           </div>

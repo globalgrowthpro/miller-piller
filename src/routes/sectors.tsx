@@ -17,9 +17,9 @@ function Sectors() {
       <PageHero title={t("sectors")} image={hero} />
       <section className="mx-auto grid max-w-7xl gap-5 px-4 py-14 sm:grid-cols-2 lg:grid-cols-3">
         {sectors.map((s) => (
-          <div key={s.en} className="card-surface flex items-center gap-4 p-6">
+          <div key={s.en} className="card-surface flex items-start gap-4 p-6">
             <span className="bg-gradient-primary grid h-12 w-12 shrink-0 place-items-center rounded-xl text-primary-foreground"><Building2 /></span>
-            <h3 className="text-xl font-bold text-navy">{s[lang]}</h3>
+            <div><h3 className="text-xl font-bold text-navy">{s[lang]}</h3><p className="mt-1 text-sm text-muted-foreground">{s.text[lang]}</p></div>
           </div>
         ))}
       </section>

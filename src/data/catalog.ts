@@ -55,19 +55,27 @@ export const equipment: Equipment[] = [
   },
 ];
 
-export const services: { slug: string; title: Bi; text: Bi; image: string }[] = [
-  { slug: "rental", title: { en: "Heavy Equipment Rental", ar: "تأجير المعدات الثقيلة" }, text: { en: "Daily, weekly and monthly rental with or without operators.", ar: "تأجير يومي وأسبوعي وشهري مع أو بدون مشغل." }, image: loader },
-  { slug: "contracting", title: { en: "Contracting Works", ar: "أعمال المقاولات" }, text: { en: "Excavation, backfilling, grading and site preparation.", ar: "أعمال الحفر والردم والتسوية وتجهيز المواقع." }, image: excavator },
-  { slug: "site-support", title: { en: "Site Support", ar: "دعم مواقع العمل" }, text: { en: "Material handling and logistics support on site.", ar: "مناولة المواد والدعم اللوجستي في الموقع." }, image: telehandler },
+export const services: { slug: string; title: Bi; text: Bi; image: string; features?: Bi[] }[] = [
+  { slug: "rental", title: { en: "Heavy Equipment Rental", ar: "تأجير المعدات الثقيلة" }, text: { en: "Daily, weekly and monthly rental with or without operators.", ar: "تأجير يومي وأسبوعي وشهري مع أو بدون مشغل." }, features: [{ en: "With or without operator", ar: "مع أو بدون مشغل" }, { en: "Flexible rental periods", ar: "مدد تأجير مرنة" }, { en: "Delivery to site", ar: "التوصيل إلى الموقع" }], image: loader },
+  { slug: "contracting", title: { en: "Contracting Works", ar: "أعمال المقاولات" }, text: { en: "Excavation, backfilling, grading and site preparation.", ar: "أعمال الحفر والردم والتسوية وتجهيز المواقع." }, features: [{ en: "Excavation & backfilling", ar: "الحفر والردم" }, { en: "Grading & levelling", ar: "التسوية والتمهيد" }, { en: "Site preparation", ar: "تجهيز المواقع" }], image: excavator },
+  { slug: "site-support", title: { en: "Site Support", ar: "دعم مواقع العمل" }, text: { en: "Material handling and logistics support on site.", ar: "مناولة المواد والدعم اللوجستي في الموقع." }, features: [{ en: "Material handling", ar: "مناولة المواد" }, { en: "Lifting at height", ar: "الرفع على ارتفاعات" }, { en: "Logistics support", ar: "الدعم اللوجستي" }], image: telehandler },
 ];
 
-export const sectors: Bi[] = [
-  { en: "Construction & Real Estate", ar: "البناء والعقارات" },
-  { en: "Infrastructure & Roads", ar: "البنية التحتية والطرق" },
-  { en: "Oil & Gas", ar: "النفط والغاز" },
-  { en: "Industrial & Logistics", ar: "الصناعة والخدمات اللوجستية" },
-  { en: "Government Projects", ar: "المشاريع الحكومية" },
-  { en: "Events & Facilities", ar: "الفعاليات والمنشآت" },
+export const sectors: (Bi & { text: Bi })[] = [
+  { en: "Construction & Real Estate", ar: "البناء والعقارات", text: { en: "Lifting, earthworks and material handling for building sites.", ar: "الرفع والأعمال الترابية ومناولة المواد لمواقع البناء." } },
+  { en: "Infrastructure & Roads", ar: "البنية التحتية والطرق", text: { en: "Excavation, grading and haulage for roads and utilities.", ar: "الحفر والتسوية والنقل لمشاريع الطرق والمرافق." } },
+  { en: "Oil & Gas", ar: "النفط والغاز", text: { en: "Reliable equipment support for industrial facilities.", ar: "دعم بالمعدات الموثوقة للمنشآت الصناعية." } },
+  { en: "Industrial & Logistics", ar: "الصناعة والخدمات اللوجستية", text: { en: "Forklifts and telehandlers for warehouses and yards.", ar: "رافعات شوكية وتلي هاندلر للمستودعات والساحات." } },
+  { en: "Government Projects", ar: "المشاريع الحكومية", text: { en: "Equipment and contracting for public-sector works.", ar: "معدات ومقاولات لمشاريع القطاع العام." } },
+  { en: "Events & Facilities", ar: "الفعاليات والمنشآت", text: { en: "Setup and logistics support for venues and events.", ar: "دعم التجهيز واللوجستيات للفعاليات والمنشآت." } },
+];
+
+// Placeholder figures — replace with verified company numbers.
+export const stats: { value: string; label: Bi }[] = [
+  { value: "00+", label: { en: "Machines in fleet", ar: "معدة في الأسطول" } },
+  { value: "00+", label: { en: "Projects delivered", ar: "مشروع منجز" } },
+  { value: "00+", label: { en: "Years of experience", ar: "سنوات خبرة" } },
+  { value: "24/7", label: { en: "Site support", ar: "دعم للمواقع" } },
 ];
 
 export const projects: { title: Bi; place: Bi; image: string }[] = [
