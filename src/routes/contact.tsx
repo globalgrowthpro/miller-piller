@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import hero from "@/assets/telehandler.jpg";
 import { useI18n } from "@/lib/i18n";
+import { contact } from "@/lib/contact";
 import { PageHero } from "@/components/site/blocks";
 
 export const Route = createFileRoute("/contact")({
@@ -12,16 +13,18 @@ export const Route = createFileRoute("/contact")({
 function Contact() {
   const { t, lang } = useI18n();
   const items = [
-    [Phone, t("phone"), "+000 000 0000"], [Mail, t("email"), "info@example.com"],
-    [MapPin, lang === "ar" ? "العنوان" : "Address", "—"], [Clock, lang === "ar" ? "ساعات العمل" : "Working hours", "—"],
-  ] as const;
+    { Icon: Phone, label: t("phone"), value: contact.phoneDisplay, href: contact.phoneHref, dir: "ltr" as const },
+    { Icon: Mail, label: t("email"), value: contact.email, href: contact.emailHref, dir: "ltr" as const },
+    { Icon: MapPin, label: lang === "ar" ? "العنوان" : "Address", value: contact.address[lang], dir: lang === "ar" ? ("rtl" as const) : ("ltr" as const) },
+    { Icon: Clock, label: lang === "ar" ? "ساعات العمل" : "Working hours", value: "—", dir: "ltr" as const },
+  ];
   return (
     <>
       <PageHero title={t("contact")} image={hero} />
       <section className="mx-auto max-w-7xl px-4 py-14">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map(([Icon, l, v]) => (
-            <div key={l} className="card-surface p-6"><Icon className="text-primary" /><p className="mt-3 text-sm text-muted-foreground">{l}</p><p className="font-bold text-navy" dir="ltr">{v}</p></div>
+          {items.map(({ Icon, label, value, href, dir }) => (
+            <div key={label} className="card-surface p-6"><Icon className="text-primary" /><p className="mt-3 text-sm text-muted-foreground">{label}</p>{href ? <a href={href} dir={dir} className="font-bold text-navy hover:text-primary">{value}</a> : <p dir={dir} className="font-bold text-navy">{value}</p>}</div>
           ))}
         </div>
         <p className="mt-4 text-xs text-muted-foreground">{t("placeholderNote")}</p>

@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { contact } from "@/lib/contact";
 import logo from "@/assets/miller-piller-logo.png.asset.json";
 
 export function SiteFooter() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   return (
     <footer className="bg-navy-deep text-navy-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-3">
@@ -23,9 +24,9 @@ export function SiteFooter() {
         <div>
           <p className="mb-3 font-bold text-primary">{t("getInTouch")}</p>
           <ul className="space-y-2 text-sm text-navy-foreground/80">
-            <li className="flex items-center gap-2"><Phone size={16} /> <span dir="ltr">+000 000 0000</span></li>
-            <li className="flex items-center gap-2"><Mail size={16} /> info@example.com</li>
-            <li className="flex items-center gap-2"><MapPin size={16} /> —</li>
+            <li className="flex items-center gap-2"><Phone size={16} /> <a href={contact.phoneHref} dir="ltr" className="hover:text-primary">{contact.phoneDisplay}</a></li>
+            <li className="flex items-center gap-2"><Mail size={16} /> <a href={contact.emailHref} dir="ltr" className="hover:text-primary">{contact.email}</a></li>
+            <li className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 shrink-0" /> <span>{contact.address[lang]}</span></li>
           </ul>
           <p className="mt-3 text-xs text-navy-foreground/50">{t("placeholderNote")}</p>
         </div>
