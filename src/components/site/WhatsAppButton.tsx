@@ -1,6 +1,6 @@
 import { useI18n } from "@/lib/i18n";
 
-const WHATSAPP_URL = "https://wa.me/201288904182";
+const WHATSAPP_URL = "https://web.whatsapp.com/send?phone=201288904182";
 
 export function WhatsAppButton() {
   const { lang } = useI18n();
