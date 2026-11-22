@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -36,7 +36,7 @@ console.log('📦 Assembling standalone dist package...');
 fs.cpSync(path.join(outputDir, 'server'), path.join(distDir, 'server'), { recursive: true });
 fs.cpSync(path.join(outputDir, 'public'), path.join(distDir, 'public'), { recursive: true });
 
-// Also copy assets and static files directly to dist root for direct document root compatibility
+// Also copy public assets directly to dist root
 fs.cpSync(path.join(outputDir, 'public'), distDir, { recursive: true });
 
 // 3. server.cjs - CommonJS entry point for cPanel Phusion Passenger and IIS iisnode
@@ -54,22 +54,65 @@ import(serverUrl).catch((err) => {
 `;
 fs.writeFileSync(path.join(distDir, 'server.cjs'), serverCjs);
 fs.writeFileSync(path.join(distDir, 'index.cjs'), serverCjs);
-fs.writeFileSync(path.join(distDir, 'index.js'), `import('./server/index.mjs');\\n`);
+fs.writeFileSync(path.join(distDir, 'index.js'), `import('./server/index.mjs');\n`);
 
-// 4. .htaccess for cPanel & Hostinger hPanel (Apache / LiteSpeed)
+// 4. Generate static index.html and route pages
+console.log('📄 Generating static index.html and pre-rendered pages...');
+const PRERENDER_PORT = '4055';
+const serverProc = spawn(process.execPath, [path.join(distDir, 'server.cjs')], {
+  env: { ...process.env, PORT: PRERENDER_PORT },
+  stdio: 'ignore',
+});
+
+// Wait for server to start and fetch routes
+async function prerender() {
+  await new Promise((resolve) => setTimeout(resolve, 1800));
+
+  const routes = [
+    { path: '/', file: 'index.html' },
+    { path: '/about', file: 'about/index.html' },
+    { path: '/services', file: 'services/index.html' },
+    { path: '/equipment', file: 'equipment/index.html' },
+    { path: '/sectors', file: 'sectors/index.html' },
+    { path: '/projects', file: 'projects/index.html' },
+    { path: '/quote', file: 'quote/index.html' },
+    { path: '/contact', file: 'contact/index.html' },
+    { path: '/not-found', file: '404.html' },
+  ];
+
+  for (const r of routes) {
+    try {
+      const res = await fetch(`http://localhost:${PRERENDER_PORT}${r.path}`);
+      if (res.ok || res.status === 404) {
+        const html = await res.text();
+        const targetPath = path.join(distDir, r.file);
+        fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+        fs.writeFileSync(targetPath, html, 'utf8');
+        console.log(`   ✓ Rendered: ${r.file}`);
+      }
+    } catch (e) {
+      console.warn(`   ⚠ Could not pre-render ${r.path}:`, e.message);
+    }
+  }
+
+  serverProc.kill();
+}
+
+await prerender();
+
+// 5. .htaccess for cPanel & Hostinger hPanel (Apache / LiteSpeed)
 const htaccess = `# Apache & LiteSpeed Configuration (cPanel / Hostinger hPanel)
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # Serve existing files directly
+  # Serve existing file or directory directly
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Check in public folder if request didn't match root
-  RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
-  RewriteRule ^(.*)$ public/$1 [L]
+  # SPA Fallback: route all non-file requests to index.html
+  RewriteRule ^ index.html [L]
 </IfModule>
 
 # Caching & Security Headers
@@ -87,15 +130,13 @@ const htaccess = `# Apache & LiteSpeed Configuration (cPanel / Hostinger hPanel)
 </IfModule>
 `;
 fs.writeFileSync(path.join(distDir, '.htaccess'), htaccess);
+fs.writeFileSync(path.join(rootDir, '.htaccess'), htaccess);
 
-// 5. web.config for Windows Server IIS
+// 6. web.config for Windows Server IIS
 const webConfig = `<?xml version="1.0" encoding="utf-8"?>
 <!-- Windows Server IIS Configuration -->
 <configuration>
   <system.webServer>
-    <handlers>
-      <add name="iisnode" path="server.cjs" verb="*" modules="iisnode"/>
-    </handlers>
     <rewrite>
       <rules>
         <!-- Static files: serve directly -->
@@ -103,34 +144,31 @@ const webConfig = `<?xml version="1.0" encoding="utf-8"?>
           <match url="^(assets/|public/|favicon\\.png|robots\\.txt|.*\\.(png|jpg|jpeg|gif|svg|css|js|webp|woff|woff2|ttf|eot))$" />
           <action type="None"/>
         </rule>
-        <!-- Dynamic requests: route to server.cjs -->
-        <rule name="DynamicContent">
-          <conditions>
-            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="True"/>
+        <!-- SPA Fallback: route everything to index.html -->
+        <rule name="SPAFallback" stopProcessing="true">
+          <match url=".*" />
+          <conditions logicalGrouping="MatchAll">
+            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
           </conditions>
-          <action type="Rewrite" url="server.cjs"/>
+          <action type="Rewrite" url="index.html" />
         </rule>
       </rules>
     </rewrite>
-    <security>
-      <requestFiltering>
-        <hiddenSegments>
-          <remove segment="bin"/>
-        </hiddenSegments>
-      </requestFiltering>
-    </security>
+    <staticContent>
+      <remove fileExtension=".webp" />
+      <mimeMap fileExtension=".webp" mimeType="image/webp" />
+      <remove fileExtension=".woff2" />
+      <mimeMap fileExtension=".woff2" mimeType="font/woff2" />
+    </staticContent>
     <httpErrors existingResponse="PassThrough" />
-    <iisnode
-      watchedFiles="server.cjs;server\\index.mjs"
-      loggingEnabled="true"
-      logDirectory="iisnode"
-    />
   </system.webServer>
 </configuration>
 `;
 fs.writeFileSync(path.join(distDir, 'web.config'), webConfig);
+fs.writeFileSync(path.join(rootDir, 'web.config'), webConfig);
 
-// 6. Minimal production package.json inside dist
+// 7. Minimal production package.json inside dist
 const prodPackageJson = {
   name: "miller-piller",
   version: "1.0.0",
@@ -148,11 +186,17 @@ fs.writeFileSync(
 
 console.log('\n✨ Single "dist" folder created successfully at: ' + distDir);
 console.log('📂 Everything is ready in "dist/":');
-console.log('   ├── dist/server/         (Node.js server bundle)');
-console.log('   ├── dist/assets/         (Compiled CSS, JS, Images)');
-console.log('   ├── dist/public/         (Static assets)');
-console.log('   ├── dist/server.cjs      (Entry point for cPanel & IIS)');
-console.log('   ├── dist/index.js        (Entry point)');
+console.log('   ├── dist/index.html      (Main static HTML document)');
+console.log('   ├── dist/404.html        (Fallback 404 page)');
+console.log('   ├── dist/about/          (Pre-rendered /about)');
+console.log('   ├── dist/services/       (Pre-rendered /services)');
+console.log('   ├── dist/equipment/      (Pre-rendered /equipment)');
+console.log('   ├── dist/sectors/        (Pre-rendered /sectors)');
+console.log('   ├── dist/projects/       (Pre-rendered /projects)');
+console.log('   ├── dist/quote/          (Pre-rendered /quote)');
+console.log('   ├── dist/contact/        (Pre-rendered /contact)');
+console.log('   ├── dist/assets/         (Compiled CSS, JS, Images, Logo)');
 console.log('   ├── dist/.htaccess       (Apache/LiteSpeed for cPanel & hPanel)');
 console.log('   ├── dist/web.config      (Windows IIS config)');
+console.log('   ├── dist/server.cjs      (Optional Node.js server entry)');
 console.log('   └── dist/package.json    (Production start config)');

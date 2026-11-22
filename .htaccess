@@ -3,26 +3,25 @@
   RewriteEngine On
   RewriteBase /
 
-  # Serve static files from public directory directly if requested
-  RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
-  RewriteRule ^(.*)$ public/$1 [L]
-
-  # If actual file exists, serve it directly
+  # Serve existing file or directory directly
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
+
+  # SPA Fallback: route all non-file requests to index.html
+  RewriteRule ^ index.html [L]
 </IfModule>
 
-# MIME Types & Caching
+# Caching & Security Headers
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
-  <FilesMatch "\.(css|js|png|jpg|jpeg|webp|svg|woff|woff2)$">
+  <FilesMatch "\.(css|js|png|jpg|jpeg|webp|svg|woff|woff2|ico)$">
     Header set Cache-Control "max-age=31536000, public"
   </FilesMatch>
 </IfModule>
 
-# Compression
+# Gzip / Brotli Compression
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
