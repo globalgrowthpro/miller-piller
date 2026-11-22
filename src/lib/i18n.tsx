@@ -18,7 +18,7 @@ export const dict = {
     fullName: "Full name", company: "Company (optional)", phone: "Phone", email: "Email", equipmentNeeded: "Equipment needed",
     location: "Project location", startDate: "Start date", duration: "Rental duration", message: "Additional details",
     submit: "Send request", sending: "Sending…", thanks: "Thank you! Your request has been received.", thanksSub: "Our team will review it and contact you shortly.",
-    placeholderNote: "Sample content — to be replaced with verified company information.",
+    placeholderNote: "",
     rights: "All rights reserved.", quickLinks: "Quick links", getInTouch: "Get in touch",
   },
   ar: {
@@ -35,7 +35,7 @@ export const dict = {
     fullName: "الاسم الكامل", company: "الشركة (اختياري)", phone: "رقم الجوال", email: "البريد الإلكتروني", equipmentNeeded: "المعدة المطلوبة",
     location: "موقع المشروع", startDate: "تاريخ البدء", duration: "مدة التأجير", message: "تفاصيل إضافية",
     submit: "إرسال الطلب", sending: "جارٍ الإرسال…", thanks: "شكراً لك! تم استلام طلبك.", thanksSub: "سيقوم فريقنا بمراجعته والتواصل معك قريباً.",
-    placeholderNote: "محتوى تجريبي — سيتم استبداله بمعلومات الشركة المعتمدة.",
+    placeholderNote: "",
     rights: "جميع الحقوق محفوظة.", quickLinks: "روابط سريعة", getInTouch: "تواصل معنا",
   },
 } as const;

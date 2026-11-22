@@ -1,6 +1,8 @@
 # Miller Piller
 
-Miller Piller — Laravel Website UI/UX Implementation
+Miller Piller — Laravel Website UI/UX Implementatio
+Developer : Mr.Hafez Rahim  / +201007419344n
+
 
 Branding: Dark Navy, Orange, White.
 
