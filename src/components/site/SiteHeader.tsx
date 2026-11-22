@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@/assets/miller-piller-logo.png.asset.json";
+import logo from "@/assets/miller-piller-logo.png";
 import { useI18n } from "@/lib/i18n";
 
 const nav = [
@@ -16,7 +16,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2">
         <Link to="/" className="shrink-0" aria-label="Miller Piller">
-          <img src={logo.url} alt="Miller Piller — Contracting and Equipment Trade" className="h-14 w-auto sm:h-16" />
+          <img src={logo} alt="Miller Piller — Contracting and Equipment Trade" className="h-14 w-auto sm:h-16" />
         </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map(([to, k]) => (

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { contact } from "@/lib/contact";
-import logo from "@/assets/miller-piller-logo.png.asset.json";
+import logo from "@/assets/miller-piller-logo.png";
 
 export function SiteFooter() {
   const { t, lang } = useI18n();
@@ -10,7 +10,7 @@ export function SiteFooter() {
     <footer className="bg-navy-deep text-navy-foreground">
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-3">
         <div>
-          <Link to="/" className="inline-block rounded-xl bg-card p-2"><img src={logo.url} alt="Miller Piller — Contracting and Equipment Trade" className="h-12 w-auto" loading="lazy" /></Link>
+          <Link to="/" className="inline-block rounded-xl bg-card p-2"><img src={logo} alt="Miller Piller — Contracting and Equipment Trade" className="h-12 w-auto" loading="lazy" /></Link>
           <p className="mt-2 text-sm text-navy-foreground/70">{t("heroText")}</p>
         </div>
         <div>
